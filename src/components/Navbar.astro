@@ -79,9 +79,24 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
   .site-header.is-scrolled {
     border-bottom-color: rgb(40 44 50 / 0.1);
   }
-  /* The menu button needs the script; without it the footer carries the same links. */
-  :global(html:not(.js)) [data-menu-button] {
+  /*
+   * The menu button needs the script; without it the footer carries the same links. js-ready counts
+   * too, because the head script drops js if the main script is slow, and the main script may still
+   * arrive after that.
+   */
+  :global(html:not(.js):not(.js-ready)) [data-menu-button] {
     display: none;
+  }
+  /* The open menu stays inside the screen and scrolls, for short screens and zoomed-in pages. */
+  #mobile-menu {
+    max-height: calc(100dvh - 88px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  @media (max-width: 479px) {
+    #mobile-menu {
+      max-height: calc(100dvh - 76px);
+    }
   }
   .nav-link {
     background-image: linear-gradient(var(--color-marigold), var(--color-marigold));

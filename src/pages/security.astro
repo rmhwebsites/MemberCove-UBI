@@ -47,7 +47,7 @@ const facts = [
   {
     icon: "rotate-ccw",
     title: "Backups",
-    text: "The database can be restored to any minute in the last 30 days, and a full export is saved every week.",
+    text: "The database can be restored to any minute in the last 30 days, so a mistake can be undone.",
   },
   {
     icon: "qr-code",
@@ -69,7 +69,7 @@ const facts = [
 const platform = [
   { icon: "server", label: "Workers", text: "runs the app" },
   { icon: "database", label: "D1", text: "holds your database" },
-  { icon: "archive", label: "R2", text: "keeps files and weekly backups" },
+  { icon: "archive", label: "R2", text: "keeps uploaded files" },
   { icon: "list-ordered", label: "Queues", text: "sends email and runs jobs" },
 ];
 ---
@@ -124,7 +124,7 @@ const platform = [
     id="audit-log"
     eyebrow="Audit log"
     title="A record of every change"
-    text="The audit log shows who did what and when, from staff sign-ins to edited events and sent reminders. Filter it by person, action or date, then export the part you need for the board or an auditor."
+    text="The audit log shows who did what and when, from edited events and new applications to reminders and scheduled campaigns. Filter it by person, action or date, then export the part you need for the board or an auditor."
     items={["Staff, members and automatic jobs are all recorded", "Filters by person, action and date", "CSV export"]}
     bleed
   >

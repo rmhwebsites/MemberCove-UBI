@@ -66,7 +66,7 @@ if (form) {
   const check = (): Errors => {
     const errors: Errors = {};
     if (!value("name")) errors.name = "Please enter your name.";
-    if (!EMAIL_PATTERN.test(value("email"))) errors.email = "Please enter a valid email address.";
+    if (!/^[\x21-\x7e]+$/.test(value("email")) || !EMAIL_PATTERN.test(value("email"))) errors.email = "Please enter a valid email address.";
     if (!value("association")) errors.association = "Please tell us your association's name.";
     return errors;
   };

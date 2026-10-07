@@ -117,6 +117,32 @@ test.describe("navigation", () => {
     await expect(page).toHaveURL(/\/pricing\/$/);
   });
 
+  test("the menu button still appears when the page script is slow", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "The menu button only shows on small screens");
+    await watch(page);
+    // A slow stylesheet holds the page script back past the head script's 2.5 second fallback,
+    // which takes the js class off again before the page script adds js-ready.
+    await page.route(/\/_astro\/.*\.css$/, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 3500));
+      await route.continue();
+    });
+    await page.goto("/", { waitUntil: "commit" });
+    await expect(page.locator("html")).toHaveClass(/js-ready/, { timeout: 10_000 });
+    expect(await page.evaluate(() => document.documentElement.classList.contains("js"))).toBe(false);
+    await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
+  });
+
+  test("the open menu scrolls on a short screen", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "The menu button only shows on small screens");
+    await watch(page);
+    await page.setViewportSize({ width: 320, height: 256 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Open menu" }).click();
+    const last = page.locator("#mobile-menu").getByRole("link", { name: "Book a demo" });
+    await last.focus();
+    await expect(last).toBeInViewport();
+  });
+
   test("the desktop links mark the current page", async ({ page, isMobile }) => {
     test.skip(isMobile, "The links are in the menu on small screens");
     await watch(page);
@@ -142,6 +168,19 @@ test.describe("home page interactions", () => {
     await expect(tablist.getByRole("tab", { name: "Email" })).toBeFocused();
     await expect(tablist.getByRole("tab", { name: "Email" })).toHaveAttribute("aria-selected", "true");
     await expect(page.locator("#closer-panel-email")).toBeVisible();
+  });
+
+  test("a focused tab shows a marigold focus ring", async ({ page }) => {
+    await watch(page);
+    await page.goto("/");
+    const tab = page.getByRole("tablist", { name: "Busy times of year" }).getByRole("tab", { name: "Renewals" });
+    await tab.scrollIntoViewIfNeeded();
+    await tab.focus();
+    await page.keyboard.press("ArrowRight");
+    const focused = page.getByRole("tablist", { name: "Busy times of year" }).getByRole("tab", { name: "Events" });
+    await expect(focused).toBeFocused();
+    const outline = await focused.evaluate((el) => getComputedStyle(el).outlineColor);
+    expect(outline).toBe("rgb(242, 202, 75)");
   });
 
   test("FAQ answers open and the topic tabs switch", async ({ page }) => {

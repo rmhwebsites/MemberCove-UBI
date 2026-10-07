@@ -30,10 +30,6 @@ export const PRICING = {
       a: "Payments go into your association's own Stripe account, and Stripe charges its fees there, the same as if you used Stripe on its own.",
     },
     {
-      q: "Do members pay anything to use the portal?",
-      a: "No. Members pay only what your association charges them, such as dues and event tickets.",
-    },
-    {
       q: "Can we see it before we decide?",
       a: "Yes. Book a demo and we'll walk you through MemberCove with a sample association's members, events and emails.",
     },

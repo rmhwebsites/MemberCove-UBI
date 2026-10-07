@@ -51,7 +51,7 @@ Messages are sent with Cloudflare Email Sending through the `EMAIL` binding, fro
 
 Before launch, make sure `hello@membercove.com` exists and receives mail. If sending ever fails, visitors are told and given that address to write to directly, and the Worker logs `contact.send_failed` (Workers Logs are turned on).
 
-The form has a hidden field that catches most bots, and each IP address can send five messages a minute (`CONTACT_LIMITER`, rate limit namespace `2001`; the app's limiters use 1001 to 1004).
+The form has a hidden field that catches simple bots, and each IP address can send five messages a minute (an IPv6 address counts by its /64, as in the app). The limiter is `CONTACT_LIMITER`, rate limit namespace `2001`; the app's limiters use 1001 to 1004. Bodies over 32 KB are refused. Turning on Turnstile (below) before launch is worth it: without it, a determined script can still send messages from many addresses.
 
 ### Turnstile (optional)
 

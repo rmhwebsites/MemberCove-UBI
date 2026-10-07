@@ -21,11 +21,11 @@ export const HOME_FAQ: FaqGroup[] = [
       },
       {
         q: "Can we bring our members over from another system?",
-        a: "Yes. Export your members to a CSV file and the import wizard shows how it will read each column before anything is saved. Members already on file are matched by email address and updated, and their member numbers and join dates carry over.",
+        a: "Yes. Export your members to a CSV file and the import wizard shows how it will read each column before anything is saved. Members already on file are matched by email address and updated, and join dates carry over.",
       },
       {
         q: "Does MemberCove replace our website?",
-        a: "No, your website stays where it is. The member portal runs on its own address, such as members.yourassociation.org, and your site can show your events and join form through embeds or the JSON API.",
+        a: "No, your website stays where it is. The member portal has a web address of its own, and your site can show your events and join form through embeds or the JSON API.",
       },
       {
         q: "How do members sign in?",
@@ -43,7 +43,7 @@ export const HOME_FAQ: FaqGroup[] = [
       },
       {
         q: "Can renewals run on their own?",
-        a: "Yes. Reminders go out on a schedule before each membership expires, auto-renew charges a saved card, and a grace period gives late payers time before a membership lapses. Members who do lapse get a win-back series.",
+        a: "Yes. Reminders go out on a schedule before each membership expires, auto-renew charges a saved card, and a grace period gives late payers time before a membership lapses. You can also set up a win-back series for members who lapse.",
       },
       {
         q: "Can events have member and non-member prices?",
@@ -61,7 +61,7 @@ export const HOME_FAQ: FaqGroup[] = [
     items: [
       {
         q: "Is our data kept apart from other associations?",
-        a: "Yes. Each association gets its own copy of MemberCove on Cloudflare, with its own database and file storage. Nothing is shared between associations.",
+        a: "Yes. Each association gets its own copy of MemberCove on Cloudflare, with its own database and file storage. No data is shared between associations.",
       },
       {
         q: "Do you store card numbers?",
@@ -69,7 +69,7 @@ export const HOME_FAQ: FaqGroup[] = [
       },
       {
         q: "What if something is deleted by mistake?",
-        a: "The database can be restored to any minute in the last 30 days, and a full copy is exported every week.",
+        a: "The database can be restored to any minute in the last 30 days.",
       },
       {
         q: "Can we get our data out?",

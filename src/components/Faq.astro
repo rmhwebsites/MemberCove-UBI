@@ -17,7 +17,7 @@ const { groups, idPrefix = "faq" } = Astro.props;
   {
     groups.length > 1 && (
       <div class="reveal flex justify-center" data-tabs>
-        <div class="tab-track" role="tablist" aria-label="Question topics">
+        <div class="tab-track on-dark" role="tablist" aria-label="Question topics">
           {groups.map((group, i) => (
             <button
               type="button"

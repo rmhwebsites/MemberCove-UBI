@@ -68,7 +68,7 @@ const chips = [
     text="Each record holds the member's practice, membership, payments, events, emails and staff notes, with their activity in order. Search, filter and save views, then act on a whole group at once."
     items={[
       "Online applications with a review queue for staff",
-      "Practice memberships that cover several people from one practice",
+      "Membership types for managers, practices and partners",
       "Filters, saved views and bulk actions",
       "CSV import and export",
       "A member directory with privacy settings for each member",
@@ -141,7 +141,7 @@ const chips = [
     items={[
       "A yearly credit goal, with each member's progress",
       "Outside credits checked by staff before they count",
-      "Printable certificates and transcripts",
+      "Printable certificates and a transcript export",
       "A monthly report of the credits issued",
     ]}
     panel="stone"
@@ -159,8 +159,8 @@ const chips = [
   <FeatureSplit
     id="email"
     eyebrow="Email"
-    title="Email in your association's colors"
-    text="Start from one of eight ready-made designs, change the words and send to any group of members. Automations take care of the emails that go out every year, like welcome series, renewal reminders and event follow-ups."
+    title="Email that comes from your association"
+    text="Start from one of eight ready-made designs, change the words and send to any group of members. Renewal reminders go out on their own, and automations handle the other routine emails once you set them up, like welcome series and event follow-ups."
     items={[
       "Designs for welcomes, newsletters, invitations, last calls, thank-yous, renewals, win-backs and portal launches",
       "Segments, merge fields and scheduled sends",
@@ -181,7 +181,7 @@ const chips = [
     <div class="container-ubi">
       <div class="reveal on-dark overflow-hidden rounded-card bg-ink px-12 pt-12 sm-down:px-5 sm-down:pt-8">
         <div class="mb-10 flex flex-wrap items-end justify-between gap-6 text-white">
-          <h3 id="automations-title" class="text-h3 max-w-[640px]">Automations send the year-round emails for you</h3>
+          <h3 id="automations-title" class="text-h3 max-w-[640px]">Set up the year-round emails once</h3>
           <p class="max-w-[460px] text-[18px] leading-[1.45] text-white/70">Each one is a series of emails and staff tasks, started by something that happens to a member: joining, registering, nearing renewal or lapsing.</p>
         </div>
         <div class="aspect-[2290/900] overflow-hidden rounded-t-[16px] bg-[#f6f8fb]">
@@ -257,9 +257,9 @@ const chips = [
     tone="cream"
     eyebrow="Integrations"
     title="Connected to your website and your tools"
-    text="The portal carries your association's name, logo and colors on its own web address. Your current website can show your events and join form, and developers get a JSON API and webhooks."
+    text="The portal carries your association's name and badge on a web address of its own. Your current website can show your events and join form, and developers get a JSON API and webhooks."
     items={[
-      "Event listings and a join form to embed in your website",
+      "Event listings and a join form for your website, in your colors",
       "A JSON API with public and server keys, plus webhooks",
       "Apple Wallet passes and calendar files for events",
       "AI assistants like Claude and ChatGPT, limited to what each person's role allows",
@@ -272,7 +272,7 @@ const chips = [
     <DeviceFrame
       slot="media"
       src={adminBranding}
-      alt="Branding settings: the association's primary and accent colors, logo text and email footer, with a live preview of the website widgets and an email."
+      alt="Branding settings: the colors your website widgets use, the badge letters and the email footer, with a live preview of the widgets and an email."
       sizes="(max-width: 991px) 140vw, 1000px"
       class="w-[135%] max-w-none"
     />

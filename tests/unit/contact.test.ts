@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { buildContactEmail, encodeHeaderText, handleContact, parseContact, parseMailbox, type ContactDeps } from "../../src/worker/contact";
+import { buildContactEmail, encodeHeaderText, handleContact, parseContact, parseMailbox, rateKey, type ContactDeps } from "../../src/worker/contact";
 
 const valid = {
   name: "Dana Whitfield",
@@ -55,6 +55,11 @@ describe("parseContact", () => {
 
   it("refuses an email address carrying a header", () => {
     expect(parseContact({ ...valid, email: "a@b.co\r\nBcc: c@d.co" }).ok).toBe(false);
+  });
+
+  it("refuses addresses that aren't plain ASCII, which would go raw into Reply-To", () => {
+    expect(parseContact({ ...valid, email: "zoë@example.com" }).ok).toBe(false);
+    expect(parseContact({ ...valid, email: "dana@exämple.com" }).ok).toBe(false);
   });
 
   it("marks a filled honeypot as a bot", () => {
@@ -141,6 +146,27 @@ describe("buildContactEmail", () => {
   });
 });
 
+describe("rateKey", () => {
+  it("counts IPv4 addresses one by one", () => {
+    expect(rateKey("203.0.113.9")).toBe("203.0.113.9");
+  });
+
+  it("counts IPv6 addresses by their /64", () => {
+    const a = rateKey("2001:db8:1234:5678:1:2:3:4");
+    expect(a).toBe("2001:db8:1234:5678::/64");
+    expect(rateKey("2001:db8:1234:5678:ffff::1")).toBe(a);
+    expect(rateKey("2001:DB8:1234:5678::abcd")).toBe(a);
+    expect(rateKey("2001:db8:1234:5679::1")).not.toBe(a);
+  });
+
+  it("handles short forms, zones and IPv4-mapped addresses", () => {
+    expect(rateKey("2001:db8::1")).toBe("2001:db8:0:0::/64");
+    expect(rateKey("fe80::1%eth0")).toBe("fe80:0:0:0::/64");
+    expect(rateKey("::ffff:203.0.113.9")).toBe("203.0.113.9");
+    expect(rateKey(null)).toBe("unknown");
+  });
+});
+
 describe("handleContact", () => {
   const url = "https://membercove.com/api/contact";
 
@@ -205,6 +231,43 @@ describe("handleContact", () => {
     const { deps: d } = deps();
     const res = await handleContact(post(valid, { json: true, headers: { "content-length": "999999" } }), d);
     expect(res.status).toBe(413);
+  });
+
+  it("refuses an oversized body that doesn't declare its length", async () => {
+    const { send, deps: d } = deps();
+    const big = new TextEncoder().encode(`name=A&email=a%40b.co&association=C&message=${"x".repeat(200_000)}`);
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (let i = 0; i < big.length; i += 16_384) controller.enqueue(big.subarray(i, i + 16_384));
+        controller.close();
+      },
+    });
+    const request = new Request(url, {
+      method: "POST",
+      headers: { origin: "https://membercove.com", "content-type": "application/x-www-form-urlencoded" },
+      body: stream,
+      duplex: "half",
+    } as RequestInit);
+    expect(request.headers.get("content-length")).toBeNull();
+    const res = await handleContact(request, d);
+    expect(res.status).toBe(413);
+    expect(send).not.toHaveBeenCalled();
+  });
+
+  it("reads multipart form posts", async () => {
+    const { send, deps: d } = deps();
+    const form = new FormData();
+    for (const [key, value] of Object.entries(valid)) form.append(key, value);
+    const res = await handleContact(new Request(url, { method: "POST", headers: { origin: "https://membercove.com", accept: "application/json" }, body: form }), d);
+    expect(res.status).toBe(200);
+    expect(send).toHaveBeenCalledOnce();
+  });
+
+  it("counts IPv6 visitors by their /64 for the rate limit", async () => {
+    const limit = vi.fn(async () => ({ success: true }));
+    const { deps: d } = deps({ limiter: { limit } });
+    await handleContact(post(valid, { json: true, headers: { "cf-connecting-ip": "2001:db8:1:2:aaaa::9" } }), d);
+    expect(limit).toHaveBeenCalledWith({ key: "2001:db8:1:2::/64" });
   });
 
   it("returns field errors as JSON", async () => {

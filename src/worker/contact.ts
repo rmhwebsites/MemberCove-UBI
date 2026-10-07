@@ -49,6 +49,8 @@ export interface ContactDeps {
 }
 
 const EMAIL_PATTERN = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]+$/;
+/** Printable ASCII only: the address goes into the Reply-To header as it is. */
+const ASCII = /^[\x21-\x7e]+$/;
 
 /** One line of text: trimmed, inner whitespace (including any line breaks) collapsed to one space. */
 function singleLine(value: unknown): string {
@@ -77,7 +79,7 @@ export function parseContact(fields: Record<string, unknown>): ParseResult {
   if (!value.name) errors.name = "Please enter your name.";
   else if (value.name.length > LIMITS.name) errors.name = `Please keep your name under ${LIMITS.name} characters.`;
 
-  if (!value.email || value.email.length > LIMITS.email || !EMAIL_PATTERN.test(value.email)) {
+  if (!value.email || value.email.length > LIMITS.email || !ASCII.test(value.email) || !EMAIL_PATTERN.test(value.email)) {
     errors.email = "Please enter a valid email address.";
   }
 
@@ -199,6 +201,27 @@ export function buildContactEmail(
 
 // ---- The request handler ------------------------------------------------------------------------
 
+/**
+ * What the rate limit counts a visitor by: an IPv4 address as it is, an IPv6 address by its /64,
+ * since one home or server is usually given a whole /64 and could otherwise rotate addresses.
+ * (The same rule as ipRateKey in the MemberCove app.)
+ */
+export function rateKey(ip: string | null): string {
+  if (!ip) return "unknown";
+  const raw = ip.trim().split("%")[0]!.toLowerCase();
+  if (!raw.includes(":")) return raw;
+  if (raw.includes(".")) return raw.slice(raw.lastIndexOf(":") + 1); // IPv4-mapped, ::ffff:203.0.113.9
+  const [head, tail] = raw.includes("::") ? raw.split("::", 2) : [raw, undefined];
+  const h = head ? head.split(":") : [];
+  const t = tail ? tail.split(":") : [];
+  const groups = tail === undefined ? h : [...h, ...Array<string>(Math.max(0, 8 - h.length - t.length)).fill("0"), ...t];
+  if (groups.length < 4) return raw;
+  return `${groups
+    .slice(0, 4)
+    .map((g) => (parseInt(g, 16) || 0).toString(16))
+    .join(":")}::/64`;
+}
+
 const TURNSTILE_VERIFY = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 async function verifyTurnstile(deps: ContactDeps, token: string, ip: string | null): Promise<boolean> {
@@ -236,23 +259,48 @@ function htmlProblem(message: string, status: number, fallbackEmail: string): Re
   return new Response(page, { status, headers: { ...BASE_HEADERS, "content-type": "text/html; charset=utf-8" } });
 }
 
-async function readFields(request: Request): Promise<Record<string, unknown> | null> {
-  const type = request.headers.get("content-type") ?? "";
+/** The request body, or null once it passes `limit` bytes, whatever Content-Length said. */
+async function readCapped(request: Request, limit: number): Promise<Uint8Array | null> {
+  if (!request.body) return new Uint8Array();
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > limit) {
+      await reader.cancel().catch(() => {});
+      return null;
+    }
+    chunks.push(value);
+  }
+  const body = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return body;
+}
+
+/** The form's fields from a JSON, URL-encoded or multipart body; null when it can't be read. */
+async function parseFields(body: Uint8Array, type: string): Promise<Record<string, unknown> | null> {
   try {
     if (type.includes("application/json")) {
-      const data = await request.json();
+      const data: unknown = JSON.parse(new TextDecoder().decode(body));
       return data && typeof data === "object" && !Array.isArray(data) ? (data as Record<string, unknown>) : null;
     }
-    if (type.includes("application/x-www-form-urlencoded") || type.includes("multipart/form-data")) {
-      const form = await request.formData();
-      const fields: Record<string, unknown> = {};
-      for (const [key, value] of form.entries()) if (typeof value === "string") fields[key] = value;
-      return fields;
-    }
+    let form: URLSearchParams | FormData;
+    if (type.includes("application/x-www-form-urlencoded")) form = new URLSearchParams(new TextDecoder().decode(body));
+    else if (type.includes("multipart/form-data")) form = await new Response(body, { headers: { "content-type": type } }).formData();
+    else return null;
+    const fields: Record<string, unknown> = {};
+    for (const [key, value] of form.entries()) if (typeof value === "string") fields[key] = value;
+    return fields;
   } catch {
     return null;
   }
-  return null;
 }
 
 export async function handleContact(request: Request, deps: ContactDeps): Promise<Response> {
@@ -268,16 +316,19 @@ export async function handleContact(request: Request, deps: ContactDeps): Promis
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin) return problem("This form only accepts messages sent from the MemberCove website.", 403);
 
+  // Refuse early when the size is declared; readCapped also stops a body that doesn't declare it.
   const length = Number(request.headers.get("content-length") ?? "0");
   if (length > LIMITS.body) return problem("That message is too long to send.", 413);
 
   const ip = request.headers.get("cf-connecting-ip");
   if (deps.limiter) {
-    const { success } = await deps.limiter.limit({ key: ip ?? "unknown" });
+    const { success } = await deps.limiter.limit({ key: rateKey(ip) });
     if (!success) return problem("Too many messages have come from your connection. Please wait a minute and try again.", 429, {}, { "retry-after": "60" });
   }
 
-  const fields = await readFields(request);
+  const body = await readCapped(request, LIMITS.body);
+  if (!body) return problem("That message is too long to send.", 413);
+  const fields = await parseFields(body, request.headers.get("content-type") ?? "");
   if (!fields) return problem("We couldn't read the form. Please try again.", 400);
 
   const parsed = parseContact(fields);

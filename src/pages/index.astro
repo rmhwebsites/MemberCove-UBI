@@ -41,7 +41,7 @@ const tiles = [
   {
     icon: "mail",
     title: "Email",
-    text: "Campaigns to any group of members, eight ready-made designs, and automatic emails for renewals, new members and event follow-up.",
+    text: "Campaigns to any group of members, eight ready-made designs, renewal reminders that send themselves, and automations you set up for new members and event follow-up.",
     href: "/features/#email",
   },
   {
@@ -53,7 +53,7 @@ const tiles = [
   {
     icon: "award",
     title: "CE credit",
-    text: "Credits post when attendees check in. Members log outside courses for staff to verify and print their own certificates.",
+    text: "Credits post when members check in at your events. Members log outside courses for staff to verify and print their own certificates.",
     href: "/features/#ce-credit",
   },
   {
@@ -138,10 +138,10 @@ const integrations = [
 
   <StatsRow
     title="Made for the way practice management associations run"
-    text="Your members manage medical and dental practices. MemberCove handles memberships for individual managers and for whole practices, events that earn CE credit, and dues that renew every year."
+    text="Your members manage medical and dental practices. MemberCove handles membership types for managers, practices and industry partners, events that earn CE credit, and dues that renew every year."
     stats={[
       { value: "1", label: "database for each association, never shared with another" },
-      { value: "8", label: "ready-made email designs in your association's colors" },
+      { value: "8", label: "ready-made email designs, sent in your association's name" },
       { value: "30", label: "days of restore points for your data" },
     ]}
   />
@@ -189,7 +189,7 @@ const integrations = [
     <div class="container-ubi">
       <SectionHeading id="closer-title" title="A closer look at the busy times of year" />
       <div class="reveal mt-12 flex justify-center" data-tabs>
-        <div class="tab-track" role="tablist" aria-label="Busy times of year">
+        <div class="tab-track on-dark" role="tablist" aria-label="Busy times of year">
           {
             tabs.map((tab, i) => (
               <button
@@ -241,7 +241,7 @@ const integrations = [
     items={[
       "QR codes signed by MemberCove, so a ticket can't be forged or edited",
       "Each ticket checks in once, and a second scan is refused",
-      "Checking in adds the event's CE credit to the attendee's record",
+      "Checking in adds the event's CE credit to the member's record",
       "Kiosk check-in and badge printing for bigger events",
     ]}
     link={{ label: "See event features", href: "/features/#events" }}
