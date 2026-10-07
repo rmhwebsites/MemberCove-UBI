@@ -1,0 +1,24 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base title="Page not found" description="This page doesn't exist." noindex>
+  <section class="pt-4">
+    <div class="container-ubi">
+      <div class="rounded-hero bg-stone px-20 py-[140px] text-center lg-down:px-10 sm-down:px-5 sm-down:py-20">
+        <span class="inline-flex size-16 items-center justify-center rounded-full bg-marigold text-ink">
+          <Icon name="search-x" size={30} />
+        </span>
+        <h1 class="text-h1 mx-auto mt-8 max-w-[760px]">That page isn't here</h1>
+        <p class="text-lead mx-auto mt-6 max-w-[620px] text-muted-ink">The link may be old, or the address may have a typo. These pages are a good place to start.</p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/" class="btn btn-dark"><Icon name="house" size={20} /> Home</a>
+          <a href="/features/" class="btn btn-accent">Features</a>
+          <a href="/contact/" class="btn btn-light">Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="h-[120px]"></div>
+</Base>

@@ -1,0 +1,51 @@
+---
+/** UBI footer-1: logo, contact and button on the left, link columns on the right, legal bar below. */
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { CTA, FOOTER_COLUMNS, SITE } from "../data/site";
+---
+
+<footer class="on-dark bg-ink pt-[120px] pb-10 text-white sm-down:pt-[100px]">
+  <div class="container-ubi">
+    <div class="grid grid-cols-[1.1fr_1fr] gap-16 lg-down:grid-cols-1 lg-down:gap-14">
+      <div class="max-w-[460px]">
+        <Logo tone="light" />
+        <p class="mt-6 text-[20px] leading-[1.4] text-white/75">{SITE.tagline}.</p>
+        <a href={`mailto:${SITE.email}`} class="mt-8 inline-flex items-center gap-3 text-white no-underline hover:text-honey">
+          <span class="inline-flex size-10 items-center justify-center rounded-full bg-white/10"><Icon name="mail" size={20} /></span>
+          {SITE.email}
+        </a>
+        <div class="mt-10">
+          <a href={CTA.href} class="btn btn-accent">{CTA.label}</a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-8 sm-down:grid-cols-2">
+        {
+          FOOTER_COLUMNS.map((col) => (
+            <nav aria-label={col.title}>
+              <h2 class="font-sans text-[16px] tracking-[0.08em] text-white/60 uppercase">{col.title}</h2>
+              <ul class="mt-5 flex flex-col gap-3.5">
+                {col.links.map((link) => (
+                  <li>
+                    <a href={link.href} class="text-[18px] text-white no-underline hover:text-honey">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-8 text-[16px] text-white/60">
+      <p>&copy; {SITE.year} MemberCove</p>
+      <ul class="flex gap-6">
+        <li><a href="/privacy/" class="text-white/60 no-underline hover:text-honey">Privacy</a></li>
+        <li><a href="/security/" class="text-white/60 no-underline hover:text-honey">Security</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

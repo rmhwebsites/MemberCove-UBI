@@ -1,0 +1,40 @@
+---
+/**
+ * The floating card on the home hero (UBI hero-1 has a marigold card over the dashboard corner).
+ * The two events and their numbers come from the demo association's calendar.
+ */
+import Icon from "../Icon.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const events = [
+  { month: "Oct", day: "14", name: "Manager Roundtable: 2027 Fee Schedule & Coding Updates", meta: "Webinar · 24 registered" },
+  { month: "Oct", day: "22", name: "Atlanta Managers Dinner", meta: "Meetup · 11 of 40 seats taken" },
+];
+---
+
+<div class:list={["w-[360px] rounded-card bg-marigold p-6 text-ink shadow-float", className]} aria-hidden="true">
+  <div class="flex items-center justify-between">
+    <p class="text-[15px] font-medium tracking-[0.08em] uppercase">Upcoming events</p>
+    <Icon name="calendar-days" size={22} />
+  </div>
+  <ul class="mt-5 flex flex-col gap-4">
+    {
+      events.map((event) => (
+        <li class="flex gap-4 rounded-panel bg-white/55 p-3.5">
+          <span class="flex size-14 shrink-0 flex-col items-center justify-center rounded-xl bg-ink text-white">
+            <span class="text-[12px] leading-none tracking-[0.08em] uppercase opacity-80">{event.month}</span>
+            <span class="mt-1 text-[22px] leading-none font-medium">{event.day}</span>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[16px] leading-[1.3] font-medium">{event.name}</span>
+            <span class="mt-1 block text-[14px] text-ink/70">{event.meta}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

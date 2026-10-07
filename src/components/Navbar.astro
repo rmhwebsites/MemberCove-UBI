@@ -1,0 +1,98 @@
+---
+/**
+ * UBI navbar-1: logo, links and the marigold button. At 991px and below the links fold into a
+ * menu behind a button (src/scripts/site.ts opens and closes it).
+ */
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { CTA, NAV } from "../data/site";
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="site-header sticky top-0 z-50 border-b border-transparent bg-white/95 backdrop-blur-sm transition-[border-color] duration-200" data-header>
+  <div class="container-ubi flex h-[88px] items-center justify-between gap-6 sm-down:h-[76px]">
+    <Logo />
+
+    <nav aria-label="Main" class="lg-down:hidden">
+      <ul class="flex items-center gap-10">
+        {
+          NAV.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={[
+                  "nav-link text-[18px] text-ink no-underline transition-colors hover:text-ink-shadow",
+                  { "is-current": isCurrent(link.href) },
+                ]}
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href={CTA.href} class="btn btn-accent md-down:hidden">{CTA.label}</a>
+      <button
+        type="button"
+        class="hidden size-12 items-center justify-center rounded-button text-ink hover:bg-stone lg-down:inline-flex"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-button
+      >
+        <span class="sr-only" data-menu-label>Open menu</span>
+        <span data-menu-open-icon><Icon name="menu" size={28} /></span>
+        <span class="hidden" data-menu-close-icon><Icon name="x" size={28} /></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-ink/10 bg-white lg-down:block" hidden data-menu>
+    <nav aria-label="Main" class="container-ubi pt-4 pb-8">
+      <ul class="flex flex-col">
+        {
+          NAV.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="flex items-center justify-between border-b border-ink/10 py-4 font-serif text-[28px] text-ink no-underline"
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+              >
+                {link.label}
+                <Icon name="arrow-right" size={22} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={CTA.href} class="btn btn-accent mt-6 w-full">{CTA.label}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header.is-scrolled {
+    border-bottom-color: rgb(40 44 50 / 0.1);
+  }
+  /* The menu button needs the script; without it the footer carries the same links. */
+  :global(html:not(.js)) [data-menu-button] {
+    display: none;
+  }
+  .nav-link {
+    background-image: linear-gradient(var(--color-marigold), var(--color-marigold));
+    background-size: 0% 3px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 4px;
+    transition: background-size 0.25s ease;
+  }
+  .nav-link:hover,
+  .nav-link.is-current {
+    background-size: 100% 3px;
+  }
+</style>

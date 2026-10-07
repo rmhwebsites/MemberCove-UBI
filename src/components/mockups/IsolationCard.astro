@@ -1,0 +1,35 @@
+---
+/** A diagram for the security page: what each association has to itself. Decorative. */
+import Icon from "../Icon.astro";
+
+const rows = [
+  { icon: "database", title: "Database", text: "Members, dues, events and emails" },
+  { icon: "folder-lock", title: "File storage", text: "Uploaded files and weekly exports" },
+  { icon: "rotate-ccw", title: "Backups", text: "Any minute in the last 30 days" },
+  { icon: "key-round", title: "Sign-in", text: "Passkey or authenticator for admins" },
+];
+---
+
+<div class="w-[400px] rounded-card bg-white p-7 text-ink shadow-float" aria-hidden="true">
+  <div class="flex items-center justify-between">
+    <p class="text-[15px] font-medium tracking-[0.08em] text-ink/60 uppercase">Your association</p>
+    <span class="inline-flex items-center gap-1.5 rounded-pill bg-cream px-3 py-1 text-[14px]">
+      <Icon name="lock-keyhole" size={14} stroke={2} /> Not shared
+    </span>
+  </div>
+  <ul class="mt-5 flex flex-col gap-3">
+    {
+      rows.map((row) => (
+        <li class="flex items-center gap-4 rounded-panel bg-stone p-4">
+          <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-ink text-marigold">
+            <Icon name={row.icon} size={20} />
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[17px] font-medium">{row.title}</span>
+            <span class="block text-[14px] text-ink/65">{row.text}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

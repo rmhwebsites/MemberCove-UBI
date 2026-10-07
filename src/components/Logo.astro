@@ -1,0 +1,17 @@
+---
+/** The MemberCove wordmark: a marigold dot and the name in Playfair, as in the UBI navbar. */
+interface Props {
+  tone?: "ink" | "light";
+  class?: string;
+}
+const { tone = "ink", class: className } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={["inline-flex items-center gap-2.5 rounded-md no-underline", tone === "light" ? "text-white" : "text-ink", className]}
+  aria-label="MemberCove home"
+>
+  <span class="size-3.5 shrink-0 rounded-full bg-marigold" aria-hidden="true"></span>
+  <span class="font-serif text-[28px] leading-none tracking-[-0.02em]">MemberCove</span>
+</a>

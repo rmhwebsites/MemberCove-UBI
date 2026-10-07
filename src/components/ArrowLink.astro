@@ -1,0 +1,17 @@
+---
+/** "Learn more" style link with the marigold circle arrow from UBI features-1. */
+import Icon from "./Icon.astro";
+
+interface Props {
+  href: string;
+  class?: string;
+}
+const { href, class: className } = Astro.props;
+---
+
+<a href={href} class:list={["group inline-flex items-center gap-3 text-[20px] no-underline", className]}>
+  <slot />
+  <span class="inline-flex size-9 items-center justify-center rounded-full bg-marigold text-ink transition-transform duration-200 group-hover:translate-x-1">
+    <Icon name="arrow-right" size={18} stroke={2.25} />
+  </span>
+</a>

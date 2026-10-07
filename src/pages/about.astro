@@ -1,0 +1,108 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CtaBand from "../components/CtaBand.astro";
+import PhoneFrame from "../components/mockups/PhoneFrame.astro";
+import portalDirectory from "../assets/screens/portal-directory.webp";
+import portalHome from "../assets/screens/portal-home.webp";
+
+const principles = [
+  {
+    icon: "stethoscope",
+    title: "One kind of association",
+    text: "We build for associations of practice managers, so the things they need are part of the product: CE credit, memberships that cover a whole practice, and practice types you set yourself.",
+  },
+  {
+    icon: "badge-check",
+    title: "Your name on everything",
+    text: "Members see your association's name, logo and colors in the portal, in their emails and on their tickets. MemberCove stays in the background.",
+  },
+  {
+    icon: "lock-keyhole",
+    title: "Your data stays yours",
+    text: "Each association has its own database, and you can export your members, registrations and invoices whenever you like.",
+  },
+];
+
+const audiences = [
+  {
+    title: "Specialty manager associations",
+    text: "Groups for the managers of one kind of practice, such as dermatology, eye care, orthopedics or dental.",
+  },
+  {
+    title: "State and regional associations",
+    text: "Associations whose members run practices of every kind across a state or a region.",
+  },
+  {
+    title: "Associations outgrowing spreadsheets",
+    text: "Offices that track members in spreadsheets and email, and want renewals, events and payments in one place.",
+  },
+  {
+    title: "Associations leaving an older system",
+    text: "Groups moving to something newer that want to keep their member numbers and join dates.",
+  },
+];
+---
+
+<Base
+  title="About"
+  description="MemberCove is membership software made for practice management associations: their members, dues, events, CE credit and email, with each association's name on the portal."
+>
+  <PageHero
+    eyebrow="About"
+    title="Made for practice management associations"
+    intro="MemberCove is membership software for associations whose members run medical, dental and specialty practices."
+  >
+    <PhoneFrame slot="aside" src={portalDirectory} alt="The member directory in the portal on a phone, listing members with their practices and cities." sizes="300px" eager class="w-[300px] -rotate-[2deg]" />
+  </PageHero>
+
+  <section class="section" aria-labelledby="principles-title">
+    <div class="container-ubi">
+      <SectionHeading id="principles-title" title="What we hold to" />
+      <ul class="mt-16 grid grid-cols-3 gap-6 lg-down:grid-cols-1">
+        {
+          principles.map((item) => (
+            <li class="reveal rounded-card bg-stone p-10 sm-down:p-7">
+              <span class="inline-flex size-16 items-center justify-center rounded-full bg-ink text-marigold">
+                <Icon name={item.icon} size={30} />
+              </span>
+              <h3 class="text-h3 mt-10">{item.title}</h3>
+              <p class="mt-4 text-[20px] leading-[1.5] text-muted-ink">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-cream" aria-labelledby="audience-title">
+    <div class="container-ubi grid grid-cols-[0.9fr_1.1fr] gap-20 lg-down:grid-cols-1 lg-down:gap-12">
+      <div class="reveal">
+        <h2 id="audience-title" class="text-h2">Who it's for</h2>
+        <p class="mt-6 text-big text-muted-ink">
+          Associations where the members are the people who run practices: practice managers, administrators, billing leads and their staff.
+        </p>
+        <a href="/contact/" class="btn btn-dark mt-10">Talk to us</a>
+      </div>
+      <ul class="grid grid-cols-2 gap-6 sm-down:grid-cols-1">
+        {
+          audiences.map((item) => (
+            <li class="reveal rounded-card bg-white p-8">
+              <span class="block h-1.5 w-12 rounded-full bg-marigold" aria-hidden="true" />
+              <h3 class="mt-6 font-sans text-[22px] leading-[1.3] font-medium tracking-normal">{item.title}</h3>
+              <p class="mt-3 text-[18px] leading-[1.5] text-muted-ink">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="See whether MemberCove fits your association"
+    text="Book a demo and bring your questions. We'll show you the parts that matter to your office."
+    phone={{ src: portalHome, alt: "" }}
+  />
+</Base>

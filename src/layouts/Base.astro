@@ -1,0 +1,105 @@
+---
+/**
+ * Every page: head tags (title, description, canonical, Open Graph, structured data), the fonts,
+ * the skip link, the navbar and footer. Satoshi comes from Fontshare's CDN because its licence does
+ * not allow the font files in a public repository; Playfair Display is bundled.
+ */
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../data/site";
+import { JS_MARKER } from "../scripts/inline.mjs";
+
+interface Props {
+  /** The page name; the site name is appended. Leave out on the home page. */
+  title?: string;
+  description?: string;
+  /** Keep the page out of search results (the 404 and thank-you pages). */
+  noindex?: boolean;
+}
+
+const { title, description = SITE.description, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`;
+const site = Astro.site ?? new URL("https://membercove.com");
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL("/og.png", site).href;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${site.origin}/#organization`,
+      name: SITE.name,
+      url: site.origin,
+      email: SITE.email,
+      logo: new URL("/apple-touch-icon.png", site).href,
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: SITE.name,
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      description: SITE.description,
+      publisher: { "@id": `${site.origin}/#organization` },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#282c32" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MemberCove: members, dues and events, all in one place" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" />
+    <script is:inline set:html={JS_MARKER} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body class="min-h-screen bg-white">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Navbar />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>
+
+<style is:global>
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 100;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: var(--color-ink);
+    color: #fff;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    top: 16px;
+  }
+</style>

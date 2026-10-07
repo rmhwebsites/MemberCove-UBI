@@ -1,0 +1,286 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import FeatureSplit from "../components/FeatureSplit.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { Image } from "astro:assets";
+import DeviceFrame from "../components/mockups/DeviceFrame.astro";
+import PhoneFrame from "../components/mockups/PhoneFrame.astro";
+import EmailWindow from "../components/mockups/EmailWindow.astro";
+
+import adminMember from "../assets/screens/admin-member.webp";
+import adminEvents from "../assets/screens/admin-events.webp";
+import adminReport from "../assets/screens/admin-report-revenue.webp";
+import adminBranding from "../assets/screens/admin-settings-branding.webp";
+import adminAutomations from "../assets/screens/admin-automations-cards.webp";
+import portalEvent from "../assets/screens/portal-event.webp";
+import portalMembership from "../assets/screens/portal-membership.webp";
+import portalCeu from "../assets/screens/portal-ceu.webp";
+import portalCommunity from "../assets/screens/portal-community.webp";
+import portalJobs from "../assets/screens/portal-jobs.webp";
+import portalHome from "../assets/screens/portal-home.webp";
+import emailRenewal from "../assets/screens/email-renewal.webp";
+
+const chips = [
+  { label: "Members", href: "#members" },
+  { label: "Dues and renewals", href: "#dues" },
+  { label: "Events", href: "#events" },
+  { label: "CE credit", href: "#ce-credit" },
+  { label: "Email", href: "#email" },
+  { label: "Community", href: "#community" },
+  { label: "Reports", href: "#reports" },
+  { label: "Integrations", href: "#integrations" },
+];
+---
+
+<Base
+  title="Features"
+  description="Members, dues and renewals, events and tickets, CE credit, email, community, reports and website integration: what MemberCove does for practice management associations."
+>
+  <PageHero
+    eyebrow="Features"
+    title="Everything your association runs on"
+    intro="The admin console your staff work in, the portal your members use, and the connections to your website and payments."
+  >
+    <nav aria-label="Features on this page" class="mt-10">
+      <ul class="flex flex-wrap gap-3">
+        {
+          chips.map((chip) => (
+            <li>
+              <a
+                href={chip.href}
+                class="inline-flex h-11 items-center rounded-pill border border-ink/25 bg-white/40 px-5 text-[18px] text-ink no-underline transition-colors hover:border-ink hover:bg-white"
+              >
+                {chip.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <PhoneFrame slot="aside" src={portalEvent} alt="An event page in the member portal on a phone: a webinar on the 2027 fee schedule, with the date, time and CE credit." sizes="300px" eager class="w-[300px] rotate-[2deg]" />
+  </PageHero>
+
+  <FeatureSplit
+    id="members"
+    eyebrow="Members"
+    title="Every member on one record"
+    text="Each record holds the member's practice, membership, payments, events, emails and staff notes, with their activity in order. Search, filter and save views, then act on a whole group at once."
+    items={[
+      "Online applications with a review queue for staff",
+      "Practice memberships that cover several people from one practice",
+      "Filters, saved views and bulk actions",
+      "CSV import and export",
+      "A member directory with privacy settings for each member",
+    ]}
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminMember}
+      alt="A member record in the admin console: contact details, practice, membership type, member number, expiry date and interests."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="dues"
+    tone="cream"
+    eyebrow="Dues and renewals"
+    title="Dues, renewals and invoices"
+    text="Give each membership type its own price, grace period and auto-renew setting. Members pay online by card or ACH, and every payment, refund and invoice sits in one ledger."
+    items={[
+      "Stripe Checkout, paid into your association's own Stripe account",
+      "Renewal reminders, grace periods and lapse handling",
+      "Renewals and upgrades members do themselves in the portal",
+      "Checks and cash recorded by staff",
+      "A digital membership card members can show on their phone",
+    ]}
+    panel="stone"
+    reverse
+  >
+    <PhoneFrame
+      slot="media"
+      src={portalMembership}
+      alt="The membership page in the portal on a phone, with a digital membership card showing the member's name, practice, member number and a QR code."
+      sizes="300px"
+      class="w-[300px] sm-down:w-[250px]"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="events"
+    eyebrow="Events"
+    title="Events, from early bird to check-in"
+    text="Build an event with ticket types, an agenda, speakers, sponsors and your own registration questions. Members get member pricing when they sign in, and every attendee gets a ticket for Apple Wallet."
+    items={[
+      "Webinars, meetups, workshops and conferences",
+      "Early bird pricing and promo codes",
+      "A waitlist that tells staff when a seat opens",
+      "Check-in by camera, kiosk check-in and badge printing",
+      "Registration, revenue and attendance reports",
+    ]}
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminEvents}
+      alt="The events page in the admin console: upcoming registrations, event revenue, attendance rate and cards for each upcoming event."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="ce-credit"
+    tone="cream"
+    eyebrow="CE credit"
+    title="CE credit without the paperwork"
+    text="Credits post to a member's transcript when they check in at your sessions. Members log courses they took elsewhere, staff verify them, and members print their own certificates from the portal."
+    items={[
+      "A yearly credit goal, with each member's progress",
+      "Outside credits checked by staff before they count",
+      "Printable certificates and transcripts",
+      "A monthly report of the credits issued",
+    ]}
+    panel="stone"
+    reverse
+  >
+    <PhoneFrame
+      slot="media"
+      src={portalCeu}
+      alt="The CE credits page in the portal on a phone: verified credits, credits earned this year and the yearly goal."
+      sizes="300px"
+      class="w-[300px] sm-down:w-[250px]"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="email"
+    eyebrow="Email"
+    title="Email in your association's colors"
+    text="Start from one of eight ready-made designs, change the words and send to any group of members. Automations take care of the emails that go out every year, like welcome series, renewal reminders and event follow-ups."
+    items={[
+      "Designs for welcomes, newsletters, invitations, last calls, thank-yous, renewals, win-backs and portal launches",
+      "Segments, merge fields and scheduled sends",
+      "Delivery, open and click rates for every campaign",
+      "Automations that start when someone joins, registers, nears renewal or lapses",
+    ]}
+  >
+    <EmailWindow
+      slot="media"
+      src={emailRenewal}
+      subject="Your BPMA membership renews on Mar 15, 2027"
+      alt="A renewal reminder email from a sample association, addressed to Melissa, with her membership details and a Renew my membership button."
+      class="w-full max-w-[480px]"
+    />
+  </FeatureSplit>
+
+  <section class="pb-[120px] sm-down:pb-[100px]" aria-labelledby="automations-title">
+    <div class="container-ubi">
+      <div class="reveal on-dark overflow-hidden rounded-card bg-ink px-12 pt-12 sm-down:px-5 sm-down:pt-8">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-6 text-white">
+          <h3 id="automations-title" class="text-h3 max-w-[640px]">Automations send the year-round emails for you</h3>
+          <p class="max-w-[460px] text-[18px] leading-[1.45] text-white/70">Each one is a series of emails and staff tasks, started by something that happens to a member: joining, registering, nearing renewal or lapsing.</p>
+        </div>
+        <div class="aspect-[2290/900] overflow-hidden rounded-t-[16px] bg-[#f6f8fb]">
+          <Image
+            src={adminAutomations}
+            alt="Six automations with their triggers and results: new member onboarding, renewal reminders, lapsed member win-back, event registration follow-up, post-event survey and CE certificate, and application received."
+            widths={[640, 960, 1280, 1920, 2290]}
+            sizes="(max-width: 991px) 92vw, 1300px"
+            format="webp"
+            quality={86}
+            class="block h-auto w-full"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FeatureSplit
+    id="community"
+    tone="cream"
+    eyebrow="Community"
+    title="A place for members to help each other"
+    text="A members-only forum where managers ask the questions other practices have already solved, with categories, pinned threads and moderation. Committees get their own workspace, and practices can post jobs."
+    items={[
+      "Discussion forum with moderation tools",
+      "Committee workspaces",
+      "A job board, with each posting approved by staff",
+      "A resource library for templates, slides and recordings",
+    ]}
+    panel="stone"
+    reverse
+  >
+    <div slot="media" class="flex items-start justify-center gap-5">
+      <PhoneFrame
+        src={portalCommunity}
+        alt="The discussion forum in the portal on a phone, with categories such as billing and insurance, and HR and staffing."
+        sizes="250px"
+        class="w-[250px] sm-down:w-[160px]"
+      />
+      <PhoneFrame
+        src={portalJobs}
+        alt="The job board in the portal on a phone, listing a practice administrator opening and an aesthetic coordinator opening."
+        sizes="250px"
+        class="mt-16 w-[250px] sm-down:w-[160px]"
+      />
+    </div>
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="reports"
+    eyebrow="Reports"
+    title="Reports the board asks for"
+    text="Thirteen ready-made reports cover membership, money, events, engagement and CE credit. Run one, export it, or schedule it to land in someone's inbox."
+    items={[
+      "Membership roster, renewals forecast and lapsed members",
+      "Revenue summary and dues aging",
+      "Event attendance and revenue",
+      "A custom report builder",
+    ]}
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminReport}
+      alt="The revenue summary report: $74,758 collected this year, split into membership dues, event registrations and sponsorships, with a chart by month."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="integrations"
+    tone="cream"
+    eyebrow="Integrations"
+    title="Connected to your website and your tools"
+    text="The portal carries your association's name, logo and colors on its own web address. Your current website can show your events and join form, and developers get a JSON API and webhooks."
+    items={[
+      "Event listings and a join form to embed in your website",
+      "A JSON API with public and server keys, plus webhooks",
+      "Apple Wallet passes and calendar files for events",
+      "AI assistants like Claude and ChatGPT, limited to what each person's role allows",
+      "Card and ACH payments through Stripe",
+    ]}
+    panel="stone"
+    reverse
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminBranding}
+      alt="Branding settings: the association's primary and accent colors, logo text and email footer, with a live preview of the website widgets and an email."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <CtaBand
+    title="See it with your own association in mind"
+    text="Book a demo and we'll show you the parts that matter to you, using a sample association's members, events and emails."
+    phone={{ src: portalHome, alt: "" }}
+  />
+</Base>

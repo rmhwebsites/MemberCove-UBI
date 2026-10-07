@@ -1,0 +1,190 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import FeatureSplit from "../components/FeatureSplit.astro";
+import CtaBand from "../components/CtaBand.astro";
+import DeviceFrame from "../components/mockups/DeviceFrame.astro";
+import IsolationCard from "../components/mockups/IsolationCard.astro";
+import adminAudit from "../assets/screens/admin-audit.webp";
+import adminStaff from "../assets/screens/admin-settings-staff.webp";
+import portalMembership from "../assets/screens/portal-membership.webp";
+
+const stats = [
+  { value: "1", label: "database for each association" },
+  { value: "30", label: "days of point-in-time restore" },
+  { value: "0", label: "card numbers stored by MemberCove" },
+  { value: "2", label: "steps to sign in for owners and admins" },
+];
+
+const facts = [
+  {
+    icon: "database",
+    title: "A database of your own",
+    text: "Your association's data lives in its own database, with its own file storage. It is never mixed with another association's.",
+  },
+  {
+    icon: "key-round",
+    title: "Two-step sign-in",
+    text: "Owners and admins confirm each sign-in with a passkey or an authenticator app. Members can sign in with a passkey too.",
+  },
+  {
+    icon: "users",
+    title: "Roles for every staff member",
+    text: "Owner, admin, events, finance, communications or read-only. Each person sees and changes only what their role covers.",
+  },
+  {
+    icon: "list-checks",
+    title: "An audit log",
+    text: "Changes are recorded with who made them and when. Filter the log by person, action or date, and export it.",
+  },
+  {
+    icon: "credit-card",
+    title: "No card numbers here",
+    text: "Members enter card details on Stripe's checkout page. MemberCove keeps the record of the payment, never the card.",
+  },
+  {
+    icon: "rotate-ccw",
+    title: "Backups",
+    text: "The database can be restored to any minute in the last 30 days, and a full export is saved every week.",
+  },
+  {
+    icon: "qr-code",
+    title: "Signed tickets",
+    text: "Ticket QR codes are signed by the server and expire after the event. Each one checks in once.",
+  },
+  {
+    icon: "shield-check",
+    title: "Protected public forms",
+    text: "The join form and other public forms are rate limited and can require a Cloudflare Turnstile check, which keeps most bots out.",
+  },
+  {
+    icon: "sparkles",
+    title: "Careful AI access",
+    text: "AI assistants connect through a person's own sign-in. They can't delete records, issue refunds, send campaigns or change settings.",
+  },
+];
+
+const platform = [
+  { icon: "server", label: "Workers", text: "runs the app" },
+  { icon: "database", label: "D1", text: "holds your database" },
+  { icon: "archive", label: "R2", text: "keeps files and weekly backups" },
+  { icon: "list-ordered", label: "Queues", text: "sends email and runs jobs" },
+];
+---
+
+<Base
+  title="Security"
+  description="How MemberCove looks after your association's data: a database of your own, two-step sign-in for owners and admins, staff roles, an audit log, backups and no stored card numbers."
+>
+  <PageHero
+    eyebrow="Security"
+    title="Your members' data, kept in its own place"
+    intro="Each association runs on its own copy of MemberCove, with its own database, file storage and backups."
+  >
+    <IsolationCard slot="aside" />
+  </PageHero>
+
+  <section class="section" aria-label="Security in numbers">
+    <div class="container-ubi">
+      <ul class="grid grid-cols-4 gap-0 lg-down:grid-cols-2 lg-down:gap-y-10 sm-down:grid-cols-1">
+        {
+          stats.map((stat, i) => (
+            <li class:list={["reveal px-8 first:pl-0 lg-down:px-0", i > 0 && "border-l border-ink/15 lg-down:border-l-0"]}>
+              <span class="text-stat block text-gold-ink">{stat.value}</span>
+              <span class="mt-3 block text-[18px] leading-[1.4] text-muted-ink">{stat.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-cream" aria-labelledby="facts-title">
+    <div class="container-ubi">
+      <SectionHeading id="facts-title" title="What protects your data" intro="The safeguards built into every association's copy of MemberCove." />
+      <ul class="mt-16 grid grid-cols-3 gap-6 lg-down:grid-cols-2 md-down:grid-cols-1">
+        {
+          facts.map((fact) => (
+            <li class="reveal rounded-card bg-white p-10 sm-down:p-7">
+              <span class="inline-flex size-14 items-center justify-center rounded-full bg-marigold text-ink">
+                <Icon name={fact.icon} size={26} />
+              </span>
+              <h3 class="mt-8 font-sans text-[24px] leading-[1.25] font-medium tracking-normal">{fact.title}</h3>
+              <p class="mt-3 text-[18px] leading-[1.5] text-muted-ink">{fact.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <FeatureSplit
+    id="audit-log"
+    eyebrow="Audit log"
+    title="A record of every change"
+    text="The audit log shows who did what and when, from staff sign-ins to edited events and sent reminders. Filter it by person, action or date, then export the part you need for the board or an auditor."
+    items={["Staff, members and automatic jobs are all recorded", "Filters by person, action and date", "CSV export"]}
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminAudit}
+      alt="The audit log: each entry shows the person, the action, what it changed and when."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <FeatureSplit
+    id="roles"
+    eyebrow="Staff roles"
+    title="Access that matches each person's job"
+    text="Invite staff and board members with the role that fits. Finance staff can work in billing without touching events, and a board liaison can look without changing anything."
+    items={["Six roles, from owner to read-only", "A permissions table for each role", "Only owners can change roles"]}
+    panel="stone"
+    reverse
+    bleed
+  >
+    <DeviceFrame
+      slot="media"
+      src={adminStaff}
+      alt="The staff and roles settings: five staff members with their roles (owner, communications, events manager, finance and read-only) and when each was last active."
+      sizes="(max-width: 991px) 140vw, 1000px"
+      class="w-[135%] max-w-none"
+    />
+  </FeatureSplit>
+
+  <section class="on-dark bg-ink py-[120px] text-white sm-down:py-[100px]" aria-labelledby="cloudflare-title">
+    <div class="container-ubi grid grid-cols-[1fr_1.1fr] items-center gap-20 lg-down:grid-cols-1 lg-down:gap-12">
+      <div class="reveal">
+        <h2 id="cloudflare-title" class="text-h2">Built on Cloudflare</h2>
+        <p class="mt-6 text-big text-white/75">
+          MemberCove runs on Cloudflare's network, and every page is served over HTTPS. Each association gets its own set of these services.
+        </p>
+      </div>
+      <ul class="reveal grid grid-cols-2 gap-5 sm-down:grid-cols-1">
+        {
+          platform.map((item) => (
+            <li class="flex items-center gap-4 rounded-panel bg-white/6 p-6">
+              <span class="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-ink">
+                <Icon name={item.icon} size={22} />
+              </span>
+              <span>
+                <span class="block text-[20px] font-medium">{item.label}</span>
+                <span class="block text-[16px] text-white/65">{item.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Questions about security?"
+    text="Ask us anything about how MemberCove handles your members' data. We're happy to go through it on a call."
+    phone={{ src: portalMembership, alt: "" }}
+  />
+</Base>

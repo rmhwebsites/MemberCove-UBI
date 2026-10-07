@@ -1,0 +1,93 @@
+---
+/**
+ * UBI features-1: a marigold card that turns over to an ink back with the details and a link.
+ * It turns on hover and when its link has keyboard focus; on touch screens a tap turns it
+ * (src/scripts/site.ts). Both faces stay in the document, so screen readers get all of it.
+ */
+import Icon from "./Icon.astro";
+import ArrowLink from "./ArrowLink.astro";
+
+interface Props {
+  icon: string;
+  title: string;
+  text: string;
+  href: string;
+  linkLabel?: string;
+}
+const { icon, title, text, href, linkLabel = "Learn more" } = Astro.props;
+---
+
+<div class="flip reveal" data-flip>
+  <div class="flip-inner">
+    <div class="flip-face flip-front bg-marigold text-ink">
+      <div class="flex items-start justify-between">
+        <span class="inline-flex size-16 items-center justify-center rounded-full bg-ink text-marigold">
+          <Icon name={icon} size={30} />
+        </span>
+        <span class="inline-flex size-10 items-center justify-center rounded-full border border-ink/25" aria-hidden="true">
+          <Icon name="arrow-up-right" size={18} stroke={2} />
+        </span>
+      </div>
+      <h3 class="text-h3">{title}</h3>
+    </div>
+    <div class="flip-face flip-back on-dark bg-ink text-white">
+      <p class="text-[20px] leading-[1.45] text-white/85">{text}</p>
+      <ArrowLink href={href} class="text-white hover:text-honey">
+        {linkLabel}<span class="sr-only">: {title}</span>
+      </ArrowLink>
+    </div>
+  </div>
+</div>
+
+<style>
+  .flip {
+    perspective: 1600px;
+    min-height: 365px;
+  }
+  .flip-inner {
+    position: relative;
+    height: 100%;
+    min-height: inherit;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px;
+    border-radius: var(--radius-card);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+  .flip:focus-within .flip-inner,
+  .flip.is-flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .flip:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flip-inner {
+      transition: none;
+    }
+  }
+  @media (max-width: 767px) {
+    .flip {
+      min-height: 300px;
+    }
+  }
+  @media (max-width: 479px) {
+    .flip-face {
+      padding: 32px 28px;
+    }
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+/** Where a contact form posted without JavaScript lands once the message is sent. */
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import { SITE } from "../../data/site";
+---
+
+<Base title="Message sent" description="Your message to MemberCove is on its way." noindex>
+  <section class="pt-4">
+    <div class="container-ubi">
+      <div class="rounded-hero bg-marigold px-20 py-[140px] text-center lg-down:px-10 sm-down:px-5 sm-down:py-20">
+        <span class="inline-flex size-16 items-center justify-center rounded-full bg-ink text-marigold">
+          <Icon name="check" size={30} stroke={2.25} />
+        </span>
+        <h1 class="text-h1 mx-auto mt-8 max-w-[760px]">Thanks, your message is on its way</h1>
+        <p class="text-lead mx-auto mt-6 max-w-[640px] text-ink/80">
+          We'll reply to the email address you gave us. If anything comes up in the meantime, write to {SITE.email}.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/" class="btn btn-dark">Back to the home page</a>
+          <a href="/features/" class="btn btn-light">See features</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="h-[120px]"></div>
+</Base>

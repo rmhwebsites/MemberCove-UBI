@@ -1,0 +1,37 @@
+---
+/** UBI cta-section-1: a full-width marigold band with a dark button and a phone on the right. */
+import type { ImageMetadata } from "astro";
+import Icon from "./Icon.astro";
+import PhoneFrame from "./mockups/PhoneFrame.astro";
+import { CTA } from "../data/site";
+
+interface Props {
+  title: string;
+  text?: string;
+  phone?: { src: ImageMetadata; alt: string };
+}
+const { title, text, phone } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-marigold py-[200px] lg-down:py-[140px] sm-down:py-[100px]" aria-labelledby="cta-title">
+  <div class="container-ubi relative">
+    <div class="reveal max-w-[680px] max-[1199px]:max-w-[820px]">
+      <h2 id="cta-title" class="text-h1">{title}</h2>
+      {text && <p class="mt-6 max-w-[600px] text-big text-ink/80">{text}</p>}
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+        <a href={CTA.href} class="btn btn-dark">{CTA.label}</a>
+        <p class="inline-flex items-center gap-2.5 text-[18px]">
+          <Icon name="lock-keyhole" size={20} />
+          Each association gets its own database
+        </p>
+      </div>
+    </div>
+  </div>
+  {
+    phone && (
+      <div class="reveal absolute top-[150px] right-[max(24px,calc((100vw_-_1400px)/2_+_60px))] w-[330px] max-[1199px]:hidden" aria-hidden="true">
+        <PhoneFrame src={phone.src} alt="" sizes="330px" />
+      </div>
+    )
+  }
+</section>

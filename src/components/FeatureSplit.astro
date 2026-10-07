@@ -1,0 +1,57 @@
+---
+/**
+ * UBI combo-4: a coloured image panel on one side, the heading, text and checklist on the other.
+ * The media goes in the "media" slot; `bleed` lets a desktop screenshot run off the panel's edge so
+ * it can be shown larger than half the page would allow.
+ */
+import Checklist from "./Checklist.astro";
+import ArrowLink from "./ArrowLink.astro";
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title: string;
+  text: string;
+  items?: string[];
+  reverse?: boolean;
+  panel?: "marigold" | "stone" | "cream" | "ink";
+  bleed?: boolean;
+  link?: { label: string; href: string };
+  /** The section's own background, to alternate bands down a long page. */
+  tone?: "white" | "cream";
+  class?: string;
+}
+
+const { id, eyebrow, title, text, items = [], reverse = false, panel = "marigold", bleed = false, link, tone = "white", class: className } = Astro.props;
+const panelClass = { marigold: "bg-marigold", stone: "bg-stone", cream: "bg-cream", ink: "bg-ink" }[panel];
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section id={id} class:list={["section", tone === "cream" && "bg-cream", className]} aria-labelledby={headingId}>
+  <div class="container-ubi grid grid-cols-2 items-center gap-20 lg-down:grid-cols-1 lg-down:gap-12">
+    <div
+      class:list={[
+        "reveal relative overflow-hidden rounded-card",
+        panelClass,
+        bleed ? "aspect-[5/4] pt-12 pl-12 sm-down:pt-8 sm-down:pl-6" : "flex items-center justify-center p-12 sm-down:p-6",
+        reverse ? "order-2 lg-down:order-none" : "",
+      ]}
+    >
+      <slot name="media" />
+    </div>
+    <div class="reveal">
+      {eyebrow && <p class="mb-4 text-[16px] font-medium tracking-[0.1em] text-gold-ink uppercase">{eyebrow}</p>}
+      <h2 id={headingId} class="text-h2">{title}</h2>
+      <p class="mt-5 text-big text-muted-ink">{text}</p>
+      {items.length > 0 && <Checklist items={items} class="mt-8" />}
+      <slot />
+      {
+        link && (
+          <div class="mt-10">
+            <ArrowLink href={link.href}>{link.label}</ArrowLink>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

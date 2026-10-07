@@ -1,0 +1,36 @@
+---
+/**
+ * UBI hero-2: the inner pages' opening panel, marigold with a 32px radius. The heading and intro
+ * sit on the left; the "aside" slot (a phone, say) sits on the right; the default slot goes under
+ * the intro (anchor chips, buttons).
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro: string;
+  tone?: "marigold" | "stone" | "cream";
+}
+const { eyebrow, title, intro, tone = "marigold" } = Astro.props;
+const bg = { marigold: "bg-marigold", stone: "bg-stone", cream: "bg-cream" }[tone];
+const hasAside = Astro.slots.has("aside");
+---
+
+<section class="pt-4 pb-0">
+  <div class="container-ubi">
+    <div
+      class:list={[
+        "relative overflow-hidden rounded-hero px-20 py-[120px] lg-down:px-10 lg-down:py-[80px] sm-down:px-6 sm-down:py-14",
+        bg,
+        hasAside && "grid grid-cols-[1.2fr_0.8fr] items-center gap-12 lg-down:grid-cols-1",
+      ]}
+    >
+      <div class="max-w-[760px]">
+        {eyebrow && <p class="mb-5 text-[16px] font-medium tracking-[0.1em] uppercase">{eyebrow}</p>}
+        <h1 class="text-h1">{title}</h1>
+        <p class="mt-6 text-lead text-ink/80">{intro}</p>
+        <slot />
+      </div>
+      {hasAside && <div class="flex justify-center lg-down:hidden"><slot name="aside" /></div>}
+    </div>
+  </div>
+</section>

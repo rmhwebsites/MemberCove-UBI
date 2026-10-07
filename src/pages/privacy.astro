@@ -1,0 +1,99 @@
+---
+/**
+ * The website's privacy notice. It describes what this site does today (the contact form, Cloudflare
+ * hosting, the Fontshare font, no cookies or analytics). Have it reviewed before launch, and update
+ * it and the date if the site starts using analytics or any other service.
+ */
+import Base from "../layouts/Base.astro";
+import { SITE } from "../data/site";
+
+const updated = "October 7, 2026";
+---
+
+<Base title="Privacy notice" description="What the MemberCove website collects, why, and what you can ask us to do with it.">
+  <section class="pt-4">
+    <div class="container-ubi">
+      <div class="rounded-hero bg-stone px-20 py-[100px] lg-down:px-10 lg-down:py-[72px] sm-down:px-5 sm-down:py-14">
+        <p class="mb-5 text-[16px] font-medium tracking-[0.1em] uppercase">Legal</p>
+        <h1 class="text-h1">Privacy notice</h1>
+        <p class="text-lead mt-6 text-muted-ink">Last updated {updated}</p>
+      </div>
+    </div>
+  </section>
+
+  <article class="section">
+    <div class="container-ubi">
+      <div class="prose-ubi mx-auto max-w-[760px]">
+        <p>
+          This notice covers the MemberCove website at membercove.com. It does not cover the member portals MemberCove runs for associations.
+        </p>
+
+        <h2>What we collect</h2>
+        <h3>When you send the contact form</h3>
+        <p>
+          We receive your name, email address, association, the number of members you chose and your message. The form emails these to us; the website itself doesn't store them. We use them to reply to you and to follow up about MemberCove.
+        </p>
+        <h3>When you visit any page</h3>
+        <p>
+          Cloudflare, which hosts the site, handles your IP address and browser details to deliver pages and protect the site from abuse. The contact form also uses your IP address to limit how many messages one connection can send.
+        </p>
+        <p>We don't use cookies, analytics or advertising trackers on this website.</p>
+
+        <h2>Services the site uses</h2>
+        <ul>
+          <li><strong>Cloudflare</strong> hosts the website, delivers the contact form's emails to us and, when it is switched on, runs the Turnstile check that tells people from bots on the contact form.</li>
+          <li><strong>Fontshare</strong>, run by the Indian Type Foundry, serves the Satoshi font. Your browser downloads the font from Fontshare's servers, which see your IP address.</li>
+        </ul>
+
+        <h2>How long we keep it</h2>
+        <p>We keep contact form emails for as long as we need them to talk with you about MemberCove, then delete them.</p>
+
+        <h2>Your choices</h2>
+        <p>
+          You can ask us what we hold about you, or ask us to correct or delete it, by writing to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+
+        <h2>Changes</h2>
+        <p>If this notice changes, we'll update it here and change the date at the top.</p>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .prose-ubi {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .prose-ubi :global(h2) {
+    margin-top: 56px;
+    font-size: 34px;
+    line-height: 1.2;
+  }
+  .prose-ubi :global(h3) {
+    margin-top: 32px;
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+  .prose-ubi :global(p),
+  .prose-ubi :global(ul) {
+    margin-top: 16px;
+    color: var(--color-muted-ink);
+  }
+  .prose-ubi :global(ul) {
+    padding-left: 24px;
+    list-style: disc;
+  }
+  .prose-ubi :global(li + li) {
+    margin-top: 10px;
+  }
+  .prose-ubi :global(strong) {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .prose-ubi :global(a) {
+    color: var(--color-ink);
+  }
+</style>

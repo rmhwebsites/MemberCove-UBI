@@ -1,0 +1,18 @@
+---
+/** An eyebrow, H2 and optional intro, centred or left-aligned. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  align?: "center" | "left";
+  id?: string;
+  class?: string;
+}
+const { eyebrow, title, intro, align = "center", id, class: className } = Astro.props;
+---
+
+<div class:list={["reveal", align === "center" ? "mx-auto max-w-[820px] text-center" : "max-w-[720px]", className]}>
+  {eyebrow && <p class="mb-4 text-[16px] font-medium tracking-[0.1em] text-gold-ink uppercase">{eyebrow}</p>}
+  <h2 id={id} class="text-h2">{title}</h2>
+  {intro && <p class:list={["mt-5 text-big text-muted-ink", align === "center" && "mx-auto max-w-[680px]"]}>{intro}</p>}
+</div>

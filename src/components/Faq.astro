@@ -1,0 +1,79 @@
+---
+/**
+ * UBI faq-1: pill tabs above a stone card of questions. Each question is a native <details>, so it
+ * opens without JavaScript; the tabs need the script, and without it every group shows.
+ */
+import Icon from "./Icon.astro";
+import type { FaqGroup } from "../data/faq";
+
+interface Props {
+  groups: FaqGroup[];
+  idPrefix?: string;
+}
+const { groups, idPrefix = "faq" } = Astro.props;
+---
+
+<div>
+  {
+    groups.length > 1 && (
+      <div class="reveal flex justify-center" data-tabs>
+        <div class="tab-track" role="tablist" aria-label="Question topics">
+          {groups.map((group, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`${idPrefix}-tab-${group.id}`}
+              class="tab-pill"
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-controls={`${idPrefix}-panel-${group.id}`}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              {group.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    groups.map((group, i) => (
+      <div
+        id={`${idPrefix}-panel-${group.id}`}
+        role={groups.length > 1 ? "tabpanel" : undefined}
+        aria-labelledby={groups.length > 1 ? `${idPrefix}-tab-${group.id}` : undefined}
+        class:list={["tab-panel reveal mx-auto mt-12 max-w-[1080px] rounded-card bg-stone px-20 py-[60px] lg-down:px-10 sm-down:px-6 sm-down:py-8", { "is-active": i === 0 }]}
+      >
+        {groups.length > 1 && <h3 class="sr-only">{group.label}</h3>}
+        <div class="divide-y divide-ink/15">
+        {group.items.map((item) => (
+          <details class="faq-item">
+            <summary class="flex cursor-pointer items-center justify-between gap-6 py-7 text-[24px] leading-[1.3] font-medium sm-down:text-[20px]">
+              <span>{item.q}</span>
+              <span class="faq-plus inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-white">
+                <Icon name="plus" size={20} stroke={2.25} />
+              </span>
+            </summary>
+            <p class="max-w-[820px] pb-8 text-[20px] leading-[1.5] text-muted-ink">{item.a}</p>
+          </details>
+        ))}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-plus {
+    transition: transform 0.25s ease;
+  }
+  details[open] .faq-plus {
+    transform: rotate(45deg);
+  }
+</style>

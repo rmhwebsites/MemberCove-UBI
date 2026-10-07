@@ -1,0 +1,29 @@
+---
+/** An email as members receive it, in a plain mail window with the subject line on top. */
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  subject: string;
+  from?: string;
+  sizes?: string;
+  class?: string;
+}
+
+const { src, alt, subject, from = "Bayside Practice Managers Association", sizes = "(max-width: 767px) 90vw, 520px", class: className } = Astro.props;
+---
+
+<figure class:list={["overflow-hidden rounded-card bg-white shadow-float", className]}>
+  <div class="border-b border-ink/10 px-6 py-4">
+    <div class="flex gap-1.5" aria-hidden="true">
+      <span class="size-2.5 rounded-full bg-ink/15"></span>
+      <span class="size-2.5 rounded-full bg-ink/15"></span>
+      <span class="size-2.5 rounded-full bg-ink/15"></span>
+    </div>
+    <p class="mt-3 text-[16px] font-medium">{subject}</p>
+    <p class="text-[14px] text-ink/60">From {from}</p>
+  </div>
+  <Image src={src} alt={alt} widths={[480, 720, 1080]} sizes={sizes} format="webp" quality={86} class="block h-auto w-full" />
+</figure>

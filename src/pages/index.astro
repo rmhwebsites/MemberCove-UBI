@@ -1,0 +1,313 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import StatsRow from "../components/StatsRow.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import FlipTile from "../components/FlipTile.astro";
+import Checklist from "../components/Checklist.astro";
+import FeatureSplit from "../components/FeatureSplit.astro";
+import Faq from "../components/Faq.astro";
+import CtaBand from "../components/CtaBand.astro";
+import DeviceFrame from "../components/mockups/DeviceFrame.astro";
+import PhoneFrame from "../components/mockups/PhoneFrame.astro";
+import EventsCard from "../components/mockups/EventsCard.astro";
+import WalletPass from "../components/mockups/WalletPass.astro";
+import CheckinToast from "../components/mockups/CheckinToast.astro";
+import { CTA } from "../data/site";
+import { HOME_FAQ } from "../data/faq";
+
+import adminOverview from "../assets/screens/admin-overview.webp";
+import adminMembers from "../assets/screens/admin-members.webp";
+import adminBilling from "../assets/screens/admin-billing.webp";
+import adminEvent from "../assets/screens/admin-event.webp";
+import adminEmail from "../assets/screens/admin-email.webp";
+import portalHome from "../assets/screens/portal-home.webp";
+import portalTicket from "../assets/screens/portal-ticket.webp";
+import portalMembership from "../assets/screens/portal-membership.webp";
+
+const tiles = [
+  {
+    icon: "users",
+    title: "Members and dues",
+    text: "Applications, membership types, renewals, grace periods and invoices. Members pay by card or ACH into your own Stripe account.",
+    href: "/features/#members",
+  },
+  {
+    icon: "ticket",
+    title: "Events and tickets",
+    text: "Member and non-member pricing, early bird rates, promo codes and agendas. Tickets go into Apple Wallet and scan at the door.",
+    href: "/features/#events",
+  },
+  {
+    icon: "mail",
+    title: "Email",
+    text: "Campaigns to any group of members, eight ready-made designs, and automatic emails for renewals, new members and event follow-up.",
+    href: "/features/#email",
+  },
+  {
+    icon: "messages-square",
+    title: "Community and jobs",
+    text: "A members-only discussion forum, committee workspaces, a resource library and a job board that staff approve.",
+    href: "/features/#community",
+  },
+  {
+    icon: "award",
+    title: "CE credit",
+    text: "Credits post when attendees check in. Members log outside courses for staff to verify and print their own certificates.",
+    href: "/features/#ce-credit",
+  },
+  {
+    icon: "globe",
+    title: "Your website",
+    text: "Show your events and join form on the site you already have, or build on the JSON API and webhooks.",
+    href: "/features/#integrations",
+  },
+];
+
+const tabs = [
+  {
+    id: "renewals",
+    label: "Renewals",
+    title: "Renewal season, without the spreadsheet",
+    text: "Reminders go out before each membership expires, and members renew from the portal in about a minute. Auto-renew charges a saved card, and billing shows what's collected, what's open and what's overdue.",
+    items: ["Grace periods and lapse handling", "Card, ACH, check and cash in one ledger", "Invoices, refunds and receipts"],
+    image: adminBilling,
+    alt: "The billing page of a sample association: $74,758 collected in 2026, $545 outstanding, and a list of dues and event invoices.",
+  },
+  {
+    id: "events",
+    label: "Events",
+    title: "From the first registration to the last check-in",
+    text: "Set up tickets, the agenda and the registration form, then watch sign-ups come in by day. On the day, check-in mode scans tickets with the camera on a phone or tablet.",
+    items: ["Member pricing applied automatically", "Agenda, speakers and sponsors", "Attendee lists and badges"],
+    image: adminEvent,
+    alt: "An event page for a webinar: 24 registrations, the registration window, and quick links to the attendee list and check-in mode.",
+  },
+  {
+    id: "email",
+    label: "Email",
+    title: "Email that knows who your members are",
+    text: "Send to groups like renewals due in 30 days or members in one state, with each person's name and dates filled in. Opens and clicks show up on every member's record.",
+    items: ["Scheduled sends and live preview", "Segments that update themselves", "Delivery, open and click rates"],
+    image: adminEmail,
+    alt: "The email page: campaigns to groups such as lapsed members and renewals due in 30 days, with delivery, open and click figures.",
+  },
+];
+
+const integrations = [
+  { icon: "credit-card", label: "Stripe" },
+  { icon: "wallet", label: "Apple Wallet" },
+  { icon: "globe", label: "Your website" },
+  { icon: "braces", label: "JSON API" },
+  { icon: "webhook", label: "Webhooks" },
+  { icon: "sparkles", label: "Claude" },
+  { icon: "message-circle", label: "ChatGPT" },
+  { icon: "calendar-plus", label: "Calendars" },
+  { icon: "file-spreadsheet", label: "CSV import" },
+  { icon: "cloud", label: "Cloudflare" },
+];
+---
+
+<Base>
+  <!-- Hero (UBI hero-1) -->
+  <section class="pt-4">
+    <div class="container-ubi">
+      <div class="relative overflow-hidden rounded-hero bg-stone px-20 pt-[100px] pb-20 text-center lg-down:px-8 lg-down:pt-[72px] lg-down:pb-12 sm-down:px-4 sm-down:pt-14 sm-down:pb-6">
+        <h1 class="text-display mx-auto max-w-[1000px]">Members, dues and events, all in one place</h1>
+        <p class="text-lead mx-auto mt-7 max-w-[820px] text-muted-ink">
+          MemberCove keeps applications, renewals, event tickets, email and CE credit on one record for each member. It's made for associations of practice managers.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href={CTA.href} class="btn btn-accent">{CTA.label}</a>
+          <a href="/features/" class="btn btn-dark">See features</a>
+        </div>
+
+        <div class="reveal relative mx-auto mt-20 max-w-[1120px] text-left lg-down:mt-14 md-down:-mr-8">
+          <DeviceFrame
+            src={adminOverview}
+            alt="The MemberCove admin dashboard for a sample association: 51 active members, 7 renewals due in 30 days, revenue for the year and a list of things that need attention."
+            sizes="(max-width: 767px) 170vw, (max-width: 991px) 92vw, 1120px"
+            eager
+            class="md-down:w-[170%] md-down:max-w-none"
+          />
+          <EventsCard class="absolute -top-8 -right-8 lg-down:-top-6 lg-down:-right-4 lg-down:w-[300px] md-down:hidden" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <StatsRow
+    title="Made for the way practice management associations run"
+    text="Your members manage medical and dental practices. MemberCove handles memberships for individual managers and for whole practices, events that earn CE credit, and dues that renew every year."
+    stats={[
+      { value: "1", label: "database for each association, never shared with another" },
+      { value: "8", label: "ready-made email designs in your association's colors" },
+      { value: "30", label: "days of restore points for your data" },
+    ]}
+  />
+
+  <!-- Console and portal (UBI combo-3) -->
+  <section class="overflow-hidden bg-cream pt-[120px] sm-down:pt-[100px]" aria-labelledby="two-sides-title">
+    <div class="container-ubi">
+      <div class="grid grid-cols-2 items-end gap-20 lg-down:grid-cols-1 lg-down:gap-6">
+        <h2 id="two-sides-title" class="reveal text-h2">A console for your office and a portal for your members</h2>
+        <p class="reveal text-big text-muted-ink">
+          Both work from the same records. A renewal paid on a phone shows up in billing straight away, and an event registration lands on the attendee list without anyone typing it in twice.
+        </p>
+      </div>
+      <div class="reveal relative mt-16">
+        <div class="aspect-[1440/760] w-[88%] overflow-hidden rounded-t-[22px] md-down:w-full">
+          <DeviceFrame
+            src={adminMembers}
+            alt="The members list in the admin console, with filters for status, membership type and state, and each member's practice, type, status and expiry date."
+            sizes="(max-width: 767px) 92vw, 1200px"
+          />
+        </div>
+        <div class="absolute right-0 bottom-0 w-[24%] translate-y-[18%] md-down:hidden">
+          <PhoneFrame src={portalHome} alt="The member portal home screen on a phone, greeting Melissa with her membership status, member number and upcoming events." sizes="330px" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What it handles (UBI features-1) -->
+  <section class="section" aria-labelledby="handles-title">
+    <div class="container-ubi">
+      <SectionHeading
+        id="handles-title"
+        title="What MemberCove takes care of"
+        intro="All of it works from the same member records. Hover over a card, or tap it, for the details."
+      />
+      <div class="mt-16 grid grid-cols-3 gap-6 lg-down:grid-cols-2 md-down:grid-cols-1">
+        {tiles.map((tile) => <FlipTile {...tile} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- A closer look (UBI tabs-1) -->
+  <section class="section bg-cream" aria-labelledby="closer-title">
+    <div class="container-ubi">
+      <SectionHeading id="closer-title" title="A closer look at the busy times of year" />
+      <div class="reveal mt-12 flex justify-center" data-tabs>
+        <div class="tab-track" role="tablist" aria-label="Busy times of year">
+          {
+            tabs.map((tab, i) => (
+              <button
+                type="button"
+                role="tab"
+                id={`closer-tab-${tab.id}`}
+                class="tab-pill"
+                aria-selected={i === 0 ? "true" : "false"}
+                aria-controls={`closer-panel-${tab.id}`}
+                tabindex={i === 0 ? 0 : -1}
+              >
+                {tab.label}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+      {
+        tabs.map((tab, i) => (
+          <div
+            id={`closer-panel-${tab.id}`}
+            role="tabpanel"
+            aria-labelledby={`closer-tab-${tab.id}`}
+            class:list={["tab-panel mt-14 grid grid-cols-[1.3fr_1fr] items-center gap-16 lg-down:grid-cols-1 lg-down:gap-10", { "is-active": i === 0 }]}
+          >
+            <div class="aspect-[5/4] overflow-hidden rounded-card bg-marigold pt-12 pl-12 sm-down:pt-6 sm-down:pl-6">
+              <DeviceFrame src={tab.image} alt={tab.alt} sizes="(max-width: 991px) 140vw, 1100px" class="w-[160%] max-w-none" />
+            </div>
+            <div>
+              <h3 class="text-h3">{tab.title}</h3>
+              <p class="mt-5 text-big text-muted-ink">{tab.text}</p>
+              <Checklist items={tab.items} class="mt-8" />
+            </div>
+          </div>
+        ))
+      }
+      <div class="mt-16 flex justify-center">
+        <a href={CTA.href} class="btn btn-dark">{CTA.label}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tickets (UBI combo-4) -->
+  <FeatureSplit
+    id="tickets"
+    eyebrow="Event tickets"
+    title="Tickets your members keep on their phones"
+    text="Every registration comes with a ticket members can add to Apple Wallet or print. At the door, staff scan it with the camera on a phone or tablet."
+    items={[
+      "QR codes signed by MemberCove, so a ticket can't be forged or edited",
+      "Each ticket checks in once, and a second scan is refused",
+      "Checking in adds the event's CE credit to the attendee's record",
+      "Kiosk check-in and badge printing for bigger events",
+    ]}
+    link={{ label: "See event features", href: "/features/#events" }}
+  >
+    <div slot="media" class="relative h-[640px] w-full sm-down:h-[520px]">
+      <PhoneFrame
+        src={portalTicket}
+        alt="A member's ticket in the portal on a phone: attendee, event, date and a QR code for check-in."
+        sizes="280px"
+        class="absolute top-6 left-[6%] w-[280px] sm-down:left-0 sm-down:w-[230px]"
+      />
+      <WalletPass class="absolute top-[120px] right-[4%] rotate-[3deg] sm-down:top-[150px] sm-down:right-[-6px] sm-down:w-[230px] sm-down:p-4" />
+      <CheckinToast class="absolute bottom-6 left-[2%] sm-down:bottom-2 sm-down:w-[250px]" />
+    </div>
+  </FeatureSplit>
+
+  <!-- Integrations (UBI integrations-1) -->
+  <section class="integrations on-dark relative overflow-hidden bg-ink py-[120px] text-white sm-down:py-[100px]" aria-labelledby="integrations-title">
+    <div class="container-ubi relative grid grid-cols-[1fr_1.1fr] items-center gap-20 lg-down:grid-cols-1 lg-down:gap-14">
+      <div class="reveal">
+        <h2 id="integrations-title" class="text-h2">Works with the tools you already use</h2>
+        <p class="mt-6 text-big text-white/75">
+          Payments go through Stripe, tickets go into Apple Wallet, and your website can show your events and join form. Staff and members can also connect AI assistants such as Claude and ChatGPT to their own accounts.
+        </p>
+        <a href="/features/#integrations" class="btn btn-light mt-10">See integrations</a>
+      </div>
+      <ul class="reveal grid grid-cols-5 gap-x-4 gap-y-8 sm-down:grid-cols-3" aria-label="Integrations">
+        {
+          integrations.map((item) => (
+            <li class="flex flex-col items-center gap-3 text-center">
+              <span class="inline-flex size-[88px] items-center justify-center rounded-full bg-white text-ink sm-down:size-[72px]">
+                <Icon name={item.icon} size={32} />
+              </span>
+              <span class="text-[16px] leading-tight text-white/85">{item.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Questions (UBI faq-1) -->
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container-ubi">
+      <SectionHeading id="faq-title" title="Questions associations ask us" class="mb-12" />
+      <Faq groups={HOME_FAQ} />
+      <div class="reveal mt-14 text-center">
+        <p class="text-big text-muted-ink">Have a question that isn't here?</p>
+        <a href="/contact/" class="btn btn-dark mt-6">Contact us</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="See how MemberCove would work for your association"
+    text="We'll walk you through it with a sample association's data, starting with the parts you care about most."
+    phone={{ src: portalMembership, alt: "" }}
+  />
+</Base>
+
+<style>
+  .integrations::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 40%;
+    background: radial-gradient(60% 70% at 85% 50%, rgb(242 202 75 / 0.32), transparent 70%);
+    pointer-events: none;
+  }
+</style>

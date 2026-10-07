@@ -1,0 +1,40 @@
+---
+/**
+ * A Lucide icon (lucide-static, ISC license), rendered to inline SVG at build time. Decorative by
+ * default; pass `label` when the icon is the only thing that says what a control does.
+ */
+import nodes from "lucide-static/icon-nodes.json";
+
+interface Props {
+  name: string;
+  size?: number;
+  stroke?: number;
+  class?: string;
+  label?: string;
+}
+
+const { name, size = 24, stroke = 1.75, class: className, label } = Astro.props;
+const icon = (nodes as unknown as Record<string, [string, Record<string, string | number>][] | undefined>)[name];
+if (!icon) throw new Error(`Unknown Lucide icon "${name}"`);
+
+const escapeAttr = (v: string | number) => String(v).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const inner = icon.map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${escapeAttr(v)}"`).join(" ")}/>`).join("");
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden={label ? undefined : "true"}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  focusable="false"
+  set:html={inner}
+/>

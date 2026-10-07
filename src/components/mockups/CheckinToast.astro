@@ -1,0 +1,19 @@
+---
+/** A small card showing a ticket scan going through at the door. */
+import Icon from "../Icon.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={["flex w-[290px] items-center gap-3.5 rounded-panel bg-white p-4 text-ink shadow-float", className]} aria-hidden="true">
+  <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-[#dcf3e6] text-[#17794a]">
+    <Icon name="check" size={22} stroke={2.25} />
+  </span>
+  <span class="min-w-0">
+    <span class="block text-[16px] font-medium">Checked in</span>
+    <span class="block truncate text-[14px] text-ink/65">Melissa Carter · Member ticket</span>
+  </span>
+</div>
