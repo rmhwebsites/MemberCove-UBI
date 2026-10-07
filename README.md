@@ -63,6 +63,10 @@ To add Cloudflare's bot check to the form:
 
 Do it in that order. A secret without the widget would turn every message away.
 
+### Live demo link (optional)
+
+Once the public demo of the app is running (the MemberCove app's `docs/RUNBOOK.md`, "The public demo"), add the build variable `PUBLIC_DEMO_URL`, for example `https://demo.membercove.com`, and deploy. The home page then offers "Try the live demo" next to "Book a demo" (in place of "See features"), and the footer lists it under Product. Without the variable the site never links to the demo.
+
 ### Domain
 
 Add the domain under the Worker's Settings, Domains & Routes, or uncomment `routes` in `wrangler.jsonc`. The domain has to be a zone in the same Cloudflare account. `SITE_URL` (a build variable, `https://membercove.com` by default) sets the canonical links, the sitemap and the share image address; change it if the site lives somewhere else.

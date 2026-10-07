@@ -13,7 +13,7 @@ import PhoneFrame from "../components/mockups/PhoneFrame.astro";
 import EventsCard from "../components/mockups/EventsCard.astro";
 import WalletPass from "../components/mockups/WalletPass.astro";
 import CheckinToast from "../components/mockups/CheckinToast.astro";
-import { CTA } from "../data/site";
+import { CTA, DEMO_URL } from "../data/site";
 import { HOME_FAQ } from "../data/faq";
 
 import adminOverview from "../assets/screens/admin-overview.webp";
@@ -119,7 +119,7 @@ const integrations = [
         </p>
         <div class="mt-10 flex flex-wrap justify-center gap-4">
           <a href={CTA.href} class="btn btn-accent">{CTA.label}</a>
-          <a href="/features/" class="btn btn-dark">See features</a>
+          {DEMO_URL ? <a href={DEMO_URL} class="btn btn-dark">Try the live demo</a> : <a href="/features/" class="btn btn-dark">See features</a>}
         </div>
 
         <div class="reveal relative mx-auto mt-20 max-w-[1120px] text-left lg-down:mt-14 md-down:-mr-8">

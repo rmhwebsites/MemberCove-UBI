@@ -2,7 +2,10 @@
 /** UBI footer-1: logo, contact and button on the left, link columns on the right, legal bar below. */
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
-import { CTA, FOOTER_COLUMNS, SITE } from "../data/site";
+import { CTA, DEMO_URL, FOOTER_COLUMNS, SITE } from "../data/site";
+
+// The live demo joins the product links when the site is built with PUBLIC_DEMO_URL.
+const columns = DEMO_URL ? FOOTER_COLUMNS.map((col) => (col.title === "Product" ? { ...col, links: [...col.links, { label: "Live demo", href: DEMO_URL }] } : col)) : FOOTER_COLUMNS;
 ---
 
 <footer class="on-dark bg-ink pt-[120px] pb-10 text-white sm-down:pt-[100px]">
@@ -22,7 +25,7 @@ import { CTA, FOOTER_COLUMNS, SITE } from "../data/site";
 
       <div class="grid grid-cols-3 gap-8 sm-down:grid-cols-2">
         {
-          FOOTER_COLUMNS.map((col) => (
+          columns.map((col) => (
             <nav aria-label={col.title}>
               <h2 class="font-sans text-[16px] tracking-[0.08em] text-white/60 uppercase">{col.title}</h2>
               <ul class="mt-5 flex flex-col gap-3.5">

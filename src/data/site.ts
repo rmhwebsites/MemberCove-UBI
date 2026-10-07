@@ -25,6 +25,25 @@ export const NAV: NavLink[] = [
 
 export const CTA: NavLink = { label: "Book a demo", href: "/contact/" };
 
+/**
+ * The public demo's address from the PUBLIC_DEMO_URL build variable, as an https origin, or null
+ * when it is unset or not a plain https address. The "Try the live demo" links only show when it
+ * is set, so the site never links to a demo that is not running.
+ */
+export function demoUrlFrom(raw: string | undefined): string | null {
+  const value = (raw ?? "").trim();
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" || url.username || url.password) return null;
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+export const DEMO_URL = demoUrlFrom(import.meta.env.PUBLIC_DEMO_URL as string | undefined);
+
 export const FOOTER_COLUMNS: { title: string; links: NavLink[] }[] = [
   {
     title: "Product",
