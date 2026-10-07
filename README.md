@@ -32,7 +32,7 @@ pnpm check                     # Worker types, astro check, the Worker's TypeScr
 pnpm build && pnpm test:e2e    # Playwright against the built site in the Workers runtime
 ```
 
-The end-to-end tests run every page at desktop and phone sizes. They check for console errors and content security policy violations, missing alt text, broken links and anchors, the security headers, the sitemap, the 404 page, the mobile menu, tabs, FAQ, flip cards and entrance animations, and the contact form with and without JavaScript, including its validation and rate limit. Set `CHROMIUM_PATH` to use a Chromium other than the one Playwright installed.
+The end-to-end tests run every page at desktop and phone sizes. They run axe-core's WCAG 2.1 A and AA checks, and check for console errors and content security policy violations, missing alt text, broken links and anchors, the security headers, the sitemap, the 404 page, the mobile menu, tabs, FAQ, flip cards and entrance animations, and the contact form with and without JavaScript, including its validation and rate limit. Set `CHROMIUM_PATH` to use a Chromium other than the one Playwright installed.
 
 ## Deploying on Cloudflare
 

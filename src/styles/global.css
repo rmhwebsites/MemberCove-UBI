@@ -14,7 +14,9 @@
 @theme {
   --color-ink: #282c32;
   --color-ink-shadow: #191c20;
-  --color-muted-ink: #282c3299;
+  /* UBI's muted text is ink at 60% (#282c3299), which is only 3.9:1 on white. This is the
+     nearest shade that passes WCAG AA on white, cream and stone (6.0, 5.9 and 5.6 to 1). */
+  --color-muted-ink: #5f6369;
   --color-marigold: #f2ca4b;
   --color-honey: #ffdc6c;
   --color-cream: #fffcf2;

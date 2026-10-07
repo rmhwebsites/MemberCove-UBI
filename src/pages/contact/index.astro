@@ -40,7 +40,7 @@ const inputClass =
                       <Icon name={item.icon} size={24} />
                     </span>
                     <span>
-                      <span class="block text-[16px] tracking-[0.08em] text-ink/70 uppercase">{item.label}</span>
+                      <span class="block text-[16px] tracking-[0.08em] text-ink/80 uppercase">{item.label}</span>
                       <span class="block text-[22px] font-medium group-hover:underline">{item.value}</span>
                     </span>
                   </a>
@@ -117,7 +117,7 @@ const inputClass =
                 <span data-submit-label>Send message</span>
                 <Icon name="send" size={20} />
               </button>
-              <p class="text-[16px] text-muted-ink">We use these details only to reply to you. <a href="/privacy/" class="text-ink">Privacy</a></p>
+              <p class="text-[16px] text-muted-ink">We use these details only to reply to you. <a href="/privacy/" class="text-ink underline underline-offset-3">Privacy</a></p>
             </div>
           </form>
 
@@ -127,7 +127,7 @@ const inputClass =
             </span>
             <h2 class="text-h3 mt-6">Thanks, your message is on its way</h2>
             <p class="mt-4 text-[20px] leading-[1.5] text-muted-ink">
-              We'll reply to <strong class="font-medium text-ink" data-success-email></strong>. If anything comes up in the meantime, write to <a href={`mailto:${SITE.email}`} class="text-ink">{SITE.email}</a>.
+              We'll reply to <strong class="font-medium text-ink" data-success-email></strong>. If anything comes up in the meantime, write to <a href={`mailto:${SITE.email}`} class="text-ink underline underline-offset-3">{SITE.email}</a>.
             </p>
           </div>
         </div>
